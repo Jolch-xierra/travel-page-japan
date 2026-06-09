@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fukuoka Tabishiori • Premium Travel Companion</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Premium custom animations and scrollbars */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideOver {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .animate-slideOver {
+      animation: slideOver 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Theme Transition Smoothness */
+    .theme-transition {
+      transition: background-color 0.5s ease, color 0.5s ease, border-color 0.3s ease;
+    }
+  </style>
+</head>
+<body class="theme-transition bg-pink-50/50 text-slate-800 font-sans antialiased pb-12" id="app-body">
+
+  <!-- PREMIUM HEADER -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-white/80 border-b border-slate-100 shadow-sm transition-all duration-300" id="app-header">
+    <div class="max-w-6xl mx-auto px-4 py-3 sm:py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+      
+      <!-- Brand & Title -->
+      <div class="flex items-center gap-3">
+        <div class="bg-gradient-to-tr from-rose-500 to-pink-600 p-2.5 rounded-2xl shadow-md text-white" id="brand-icon-wrapper">
+          <i data-lucide="compass" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 transition-colors duration-300" id="header-title">
+              Fukuoka Tabishiori
+            </h1>
+            <span class="text-[10px] bg-rose-50 text-rose-600 font-bold px-2.5 py-0.5 rounded-full border border-rose-100 shrink-0">
+              June 2026
+            </span>
+          </div>
+          <p class="text-xs font-semibold text-slate-500 transition-colors duration-300" id="header-subtitle">
+            Premium Adaptive Tour Guide & Planner
+          </p>
+        </div>
+      </div>
+
+      <!-- Theme Switcher & Panel Triggers -->
+      <div class="flex flex-wrap items-center gap-2.5 w-full sm:w-auto justify-end">
+        
+        <!-- Theme Controls -->
+        <div class="flex items-center gap-1 p-1 rounded-xl bg-slate-100/80 border border-slate-200" id="theme-controls-bg">
+          <i data-lucide="palette" class="w-3.5 h-3.5 text-slate-400 ml-1.5 shrink-0"></i>
+          <button onclick="setTheme('sakura')" id="btn-theme-sakura" class="text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-lg transition bg-white text-slate-900 shadow-xs">
+            Sakura
+          </button>
+          <button onclick="setTheme('nature')" id="btn-theme-nature" class="text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-lg transition text-slate-500 hover:text-slate-950">
+            Nature
+          </button>
+          <button onclick="setTheme('neon')" id="btn-theme-neon" class="text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-lg transition text-slate-500 hover:text-slate-950">
+            Neon
+          </button>
+        </div>
+
+        <!-- Assistant Trigger -->
+        <button onclick="togglePocketGuide(true)" class="flex items-center gap-1.5 text-xs bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 px-3.5 rounded-xl transition shadow-xs">
+          <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+          <span>Pocket Guide</span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-6xl mx-auto px-4 mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+    
+    <!-- LEFT COLUMN: Widgets & Financial summary (Width: 4/12) -->
+    <div class="lg:col-span-4 flex flex-col gap-6">
+      
+      <!-- DYNAMIC FINANCIAL ESTIMATOR -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs transition-colors duration-300" id="budget-card">
+        <div class="flex justify-between items-center mb-3">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400">Live Dynamic Budget</h2>
+          <span class="text-[10px] bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 font-bold px-2 py-0.5 rounded-full">
+            Calculated Live
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-100" id="budget-yen-box">
+            <span class="text-[10px] text-slate-400 font-bold block">ACTIVE TOTAL</span>
+            <span class="text-lg font-black block mt-1 text-slate-900" id="stats-total-yen">¥0</span>
+            <span class="text-[10px] text-slate-400 block mt-0.5" id="stats-total-sgd">Approx. $0.00 SGD</span>
+          </div>
+
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-100" id="budget-stops-box">
+            <span class="text-[10px] text-slate-400 font-bold block">STOPS ATTENDING</span>
+            <span class="text-lg font-black text-emerald-500 block mt-1" id="stats-stops-fraction">
+              0 <span class="text-xs font-normal text-slate-400">/ 0</span>
+            </span>
+            <span class="text-[10px] text-slate-400 block mt-0.5">Exclude cards to skip</span>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="mt-4 pt-4 border-t border-slate-100" id="progress-bar-divider">
+          <div class="flex justify-between text-xs font-bold text-slate-400 mb-1">
+            <span>Trip Progression</span>
+            <span id="stats-progression-label">Day 1 of 6</span>
+          </div>
+          <div class="w-full bg-slate-100/50 h-2 rounded-full overflow-hidden">
+            <div id="stats-progress-bar-fill" class="bg-gradient-to-r from-rose-500 to-pink-600 h-2 transition-all duration-500" style="width: 16.6%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTINGENCY ADAPTIVE SYSTEM -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs transition-colors duration-300" id="contingency-card">
+        <div class="flex items-center gap-2 mb-1.5">
+          <i data-lucide="sparkles" class="w-4 h-4 text-rose-500 animate-pulse"></i>
+          <h2 class="text-sm font-black tracking-tight" id="contingency-title">Adaptive Trip Adjuster</h2>
+        </div>
+        <p class="text-xs text-slate-400 mb-4">
+          Having sudden changes? Toggle modes to instantly filter weather advice or exhaustion tips.
+        </p>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="setContingency('sunny')" id="btn-cont-sunny" class="flex items-center gap-2 p-2.5 rounded-xl border text-xs font-bold transition bg-amber-50 border-amber-200 text-amber-700 shadow-xs">
+            <i data-lucide="sun" class="w-4 h-4 text-amber-500 shrink-0"></i>
+            <span>Sunny Energy</span>
+          </button>
+
+          <button onclick="setContingency('rain')" id="btn-cont-rain" class="flex items-center gap-2 p-2.5 rounded-xl border text-xs font-bold transition bg-white border-slate-100 hover:bg-slate-50 text-slate-600">
+            <i data-lucide="cloud-rain" class="w-4 h-4 text-blue-500 shrink-0"></i>
+            <span>Raining! 🌧️</span>
+          </button>
+
+          <button onclick="setContingency('tired')" id="btn-cont-tired" class="flex items-center gap-2 p-2.5 rounded-xl border text-xs font-bold transition bg-white border-slate-100 hover:bg-slate-50 text-slate-600">
+            <i data-lucide="battery-charging" class="w-4 h-4 text-purple-500 shrink-0"></i>
+            <span>Exhausted 🥱</span>
+          </button>
+
+          <button onclick="setContingency('hungry')" id="btn-cont-hungry" class="flex items-center gap-2 p-2.5 rounded-xl border text-xs font-bold transition bg-white border-slate-100 hover:bg-slate-50 text-slate-600">
+            <i data-lucide="utensils" class="w-4 h-4 text-rose-500 shrink-0"></i>
+            <span>Starving! 😋</span>
+          </button>
+        </div>
+
+        <!-- Contingency Alerts Area -->
+        <div id="contingency-alert-banner" class="hidden mt-3 p-3 bg-rose-50/50 border border-rose-100 rounded-xl text-[11px] text-rose-950 animate-fadeIn font-semibold">
+          <div class="flex gap-1.5 items-center mb-0.5">
+            <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-500"></i>
+            <span>Real-time Filter Active</span>
+          </div>
+          <span id="contingency-alert-text">Itinerary items are adjusted.</span>
+        </div>
+      </div>
+
+      <!-- SURVIVAL PHRASEBOOK SOUNDBOARD -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs transition-colors duration-300" id="phrasebook-card">
+        <div class="flex justify-between items-center mb-3">
+          <div class="flex items-center gap-2">
+            <i data-lucide="volume-2" class="w-4 h-4 text-indigo-500"></i>
+            <h2 class="text-sm font-black tracking-tight" id="phrasebook-title">Survival Phrasebook</h2>
+          </div>
+          <span class="text-[10px] text-slate-400 font-bold">Tap to Pronounce</span>
+        </div>
+
+        <!-- Category selector -->
+        <div class="flex gap-1.5 mb-3 overflow-x-auto pb-1 scrollbar-hide">
+          <button onclick="filterPhrases('All')" id="btn-phrase-all" class="text-[10px] font-bold px-2.5 py-1 rounded-lg transition shrink-0 bg-slate-900 text-white">All</button>
+          <button onclick="filterPhrases('Greetings')" id="btn-phrase-greetings" class="text-[10px] font-bold px-2.5 py-1 rounded-lg transition shrink-0 bg-slate-100 text-slate-500 hover:bg-slate-200">Greetings</button>
+          <button onclick="filterPhrases('Dining')" id="btn-phrase-dining" class="text-[10px] font-bold px-2.5 py-1 rounded-lg transition shrink-0 bg-slate-100 text-slate-500 hover:bg-slate-200">Dining</button>
+          <button onclick="filterPhrases('Shopping')" id="btn-phrase-shopping" class="text-[10px] font-bold px-2.5 py-1 rounded-lg transition shrink-0 bg-slate-100 text-slate-500 hover:bg-slate-200">Shopping</button>
+        </div>
+
+        <!-- Phrasebook List Container -->
+        <div id="phrasebook-list-container" class="space-y-2 max-h-56 overflow-y-auto pr-1">
+          <!-- Populated by Javascript -->
+        </div>
+      </div>
+
+      <!-- PACKING CHECKLIST -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs transition-colors duration-300" id="packing-card">
+        <div class="flex justify-between items-center mb-3">
+          <div class="flex items-center gap-2">
+            <i data-lucide="check-square" class="w-4 h-4 text-slate-500"></i>
+            <h2 class="text-sm font-bold text-slate-900" id="packing-title">Pre-Trip Prep List</h2>
+          </div>
+          <span id="packing-progress-badge" class="text-xs bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded-full">
+            0/7 done
+          </span>
+        </div>
+
+        <div id="packing-list-container" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: Timeline, Active Day Explorer & Scrapbook (Width: 8/12) -->
+    <div class="lg:col-span-8 flex flex-col gap-6">
+      
+      <!-- DAY NAVIGATION TABS -->
+      <div class="bg-white rounded-2xl p-3.5 border border-slate-100 shadow-xs transition-colors duration-300" id="day-nav-card">
+        <div class="flex items-center justify-between px-2 mb-2">
+          <span class="text-[10px] font-bold uppercase text-slate-400 tracking-wider flex items-center gap-1">
+            <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Navigate Days
+          </span>
+          <span id="current-day-label" class="text-xs font-bold italic text-rose-600">
+            Hakata Walking Food Route
+          </span>
+        </div>
+        
+        <div id="day-tabs-container" class="flex overflow-x-auto gap-2 pb-1 scrollbar-hide">
+          <!-- Generated dynamically -->
+        </div>
+      </div>
+
+      <!-- ACTIVE DAY HERO CARD -->
+      <div id="day-hero-banner" class="bg-gradient-to-r from-rose-500 to-pink-600 rounded-3xl p-6 text-white shadow-lg relative overflow-hidden transition-all duration-500">
+        <div class="absolute right-0 bottom-0 opacity-10 pointer-events-none transform translate-y-6 translate-x-6">
+          <i data-lucide="compass" class="w-56 h-56"></i>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 relative z-10 text-left">
+          <div>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-white/80">Active Expedition Screen</span>
+            <h2 id="hero-day-title" class="text-xl sm:text-2xl font-black tracking-tight mt-1">Hakata Walking Food Route</h2>
+            
+            <div class="flex items-center gap-4 mt-2.5 text-xs text-white/90">
+              <span class="flex items-center gap-1 font-bold">
+                <i data-lucide="calendar" class="w-4 h-4 text-rose-300"></i>
+                <span id="hero-day-date">20 Jun (Sat)</span>
+              </span>
+              <span id="hero-day-score" class="bg-white/10 text-white px-2 py-0.5 rounded-full text-xs font-bold border border-white/20">
+                ✅ Relaxed
+              </span>
+            </div>
+          </div>
+          
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 text-right shrink-0">
+            <span class="text-[10px] text-white/80 block font-bold">ESTIMATED EXPENDITURE</span>
+            <span id="hero-budget-yen" class="text-lg sm:text-xl font-black block mt-0.5">¥0</span>
+            <span id="hero-budget-sgd" class="text-[10px] text-white/70 block font-bold">~$0.00 SGD</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ITINERARY TIMELINE LIST -->
+      <div id="timeline-list-container" class="space-y-4">
+        <!-- Renders dynamically -->
+      </div>
+
+      <!-- MEMORIES SCROLL JOURNAL -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs transition-colors duration-300" id="memories-card">
+        <div class="flex items-center justify-between mb-4">
+          <div class="text-left">
+            <h2 class="text-sm font-black text-slate-900 flex items-center gap-1.5" id="memories-title">
+              <i data-lucide="camera" class="w-4 h-4 text-rose-500"></i>
+              <span>My Fukuoka Travel Memories</span>
+            </h2>
+            <p class="text-[11px] text-slate-400">Jot down things to remember, souvenirs bought, or fun ideas</p>
+          </div>
+          <span id="memories-counter" class="text-[10px] bg-slate-100 px-2 py-1 rounded-lg font-bold text-slate-500">2 notes</span>
+        </div>
+
+        <!-- Form -->
+        <form onsubmit="addMemory(event)" class="flex gap-2 mb-4">
+          <input 
+            type="text" 
+            id="input-memory-text"
+            placeholder="Write a cute memory or shopping note..."
+            class="flex-1 bg-slate-50/50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs focus:ring-1 focus:ring-rose-400 focus:outline-hidden"
+          />
+          <button 
+            type="submit" 
+            class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2 rounded-xl transition"
+          >
+            Add Note
+          </button>
+        </form>
+
+        <!-- Scrapbook grid -->
+        <div id="memories-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-48 overflow-y-auto pr-1">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- DATA TABULAR LEDGER -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-xs transition-colors duration-300" id="ledger-card">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 text-left">
+          <div>
+            <h2 class="text-sm font-black text-slate-900" id="ledger-title">Itinerary Financial Ledger</h2>
+            <p class="text-xs text-slate-400">Detailed list of active (attending) expenses</p>
+          </div>
+          <div class="flex gap-2">
+            <span id="ledger-badge-yen" class="text-xs bg-slate-100 font-extrabold px-3 py-1.5 rounded-lg text-slate-600 border border-slate-200">
+              ¥0 JPY
+            </span>
+            <span id="ledger-badge-sgd" class="text-xs bg-rose-50 font-extrabold px-3 py-1.5 rounded-lg text-rose-600 border border-rose-100">
+              $0.00 SGD
+            </span>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto border border-slate-100 rounded-xl">
+          <table class="min-w-full divide-y divide-slate-100 text-xs text-left">
+            <thead class="bg-slate-50">
+              <tr>
+                <th class="px-3 py-2 font-bold text-slate-500 uppercase tracking-wider">Day</th>
+                <th class="px-3 py-2 font-bold text-slate-500 uppercase tracking-wider">Activity</th>
+                <th class="px-3 py-2 font-bold text-slate-500 uppercase tracking-wider">Location</th>
+                <th class="px-3 py-2 text-right font-bold text-slate-500 uppercase tracking-wider">Cost JPY</th>
+                <th class="px-3 py-2 text-right font-bold text-slate-500 uppercase tracking-wider">Cost SGD</th>
+              </tr>
+            </thead>
+            <tbody id="ledger-table-body" class="bg-white divide-y divide-slate-100">
+              <!-- Rendered Dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- POCKET GUIDE SIDE DRAWER MODAL -->
+  <div id="pocket-guide-drawer" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex justify-end">
+    <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col animate-slideOver text-slate-800">
+      
+      <!-- Drawer Header -->
+      <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-950 text-white">
+        <div class="flex items-center gap-2">
+          <i data-lucide="compass" class="w-5 h-5 text-rose-400"></i>
+          <div class="text-left">
+            <h3 class="font-bold text-sm">Fukuoka Pocket Guide</h3>
+            <p class="text-[10px] text-slate-400">Instant expert advice for clean traveling</p>
+          </div>
+        </div>
+        <button onclick="togglePocketGuide(false)" class="text-xs bg-white/10 hover:bg-white/20 text-white font-bold py-1 px-3 rounded-lg transition">
+          Close
+        </button>
+      </div>
+
+      <!-- Chat / QA Content Area -->
+      <div class="flex-1 overflow-y-auto p-5 space-y-4 scrollbar-thin" id="pocket-chat-content">
+        <div class="bg-rose-50 text-rose-950 p-3.5 rounded-2xl text-xs border border-rose-100 leading-relaxed font-semibold text-left">
+          👋 Konnichiwa! I'm your local travel buddy. I've analyzed your custom 6-day Fukuoka schedule starting June 20, 2026. Ask me about cool local shopping, food queuing tips, or fun transit advice!
+        </div>
+
+        <!-- FAQs Accordions -->
+        <div class="space-y-2">
+          <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left">Recommended Quick Guides</h4>
+          
+          <details class="group bg-slate-50 rounded-xl border border-slate-100 text-xs overflow-hidden">
+            <summary class="p-3 font-bold text-slate-800 hover:text-rose-500 cursor-pointer flex justify-between items-center transition select-none text-left">
+              <span>How do I easily get from Fukuoka Airport to downtown Hakata?</span>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-90"></i>
+            </summary>
+            <p class="p-3 pt-0 border-t border-slate-100/50 text-slate-600 leading-relaxed font-medium text-left">
+              Fukuoka Airport is famously one of the most convenient in the world! Just take the Kuko Subway Line directly from the Domestic Terminal. It is only 2 stops (5 minutes) to Hakata Station, and 5 stops (11 minutes) to Tenjin. If arriving internationally, hop on the free green shuttle bus to the domestic terminal first.
+            </p>
+          </details>
+
+          <details class="group bg-slate-50 rounded-xl border border-slate-100 text-xs overflow-hidden">
+            <summary class="p-3 font-bold text-slate-800 hover:text-rose-500 cursor-pointer flex justify-between items-center transition select-none text-left">
+              <span>What is the Hayakaken card and do I really need it?</span>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-90"></i>
+            </summary>
+            <p class="p-3 pt-0 border-t border-slate-100/50 text-slate-600 leading-relaxed font-medium text-left">
+              The Hayakaken is Fukuoka's local IC transit card. Yes, it is highly recommended! You can load cash onto it and tap instantly on subways, buses, and JR lines. It also works in convenience stores, vending machines, and most Yatai food stalls. Suica/Pasmo cards from Tokyo are also fully accepted!
+            </p>
+          </details>
+
+          <details class="group bg-slate-50 rounded-xl border border-slate-100 text-xs overflow-hidden">
+            <summary class="p-3 font-bold text-slate-800 hover:text-rose-500 cursor-pointer flex justify-between items-center transition select-none text-left">
+              <span>What are the unspoken rules of dining at Yatai (street food stalls)?</span>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-90"></i>
+            </summary>
+            <p class="p-3 pt-0 border-t border-slate-100/50 text-slate-600 leading-relaxed font-medium text-left">
+              1. Order at least one drink (like a cold melon soda or green tea) and one food dish per person.<br>
+              2. Keep your visit efficient so other waiting people can have a turn.<br>
+              3. Cash is king (keep ¥1,000 bills and ¥500 coins ready).<br>
+              4. Ask 'Shashin ii desu ka?' before taking close-up photos of chefs.
+            </p>
+          </details>
+
+          <details class="group bg-slate-50 rounded-xl border border-slate-100 text-xs overflow-hidden">
+            <summary class="p-3 font-bold text-slate-800 hover:text-rose-500 cursor-pointer flex justify-between items-center transition select-none text-left">
+              <span>Where is the best place to buy tax-free anime goods and souvenirs?</span>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 transition-transform duration-300 group-open:rotate-90"></i>
+            </summary>
+            <p class="p-3 pt-0 border-t border-slate-100/50 text-slate-600 leading-relaxed font-medium text-left">
+              Head to Canal City Hakata for official character shops (Ghibli, Jump Shop, Ultraman). For retro games, figures, and capsule toys, check out the massive 'Mandarake' and 'Animate' in Tenjin. For great souvenir sweets, Hakata Station's 'Ming' department store offers beautiful packages with duty-free counters!
+            </p>
+          </details>
+        </div>
+
+        <!-- Custom Questions area -->
+        <div id="custom-questions-box" class="space-y-3 pt-4 border-t border-slate-100 text-left hidden">
+          <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Your Questions</h4>
+          <div id="custom-questions-list" class="space-y-3">
+            <!-- Append dynamically -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Question Form input -->
+      <form onsubmit="askPocketGuide(event)" class="p-4 border-t border-slate-100 bg-slate-50">
+        <div class="flex gap-2">
+          <input 
+            type="text"
+            id="input-pocket-q"
+            placeholder="e.g., Coolest shopping spots?"
+            class="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-1 focus:ring-rose-500 focus:outline-hidden"
+          />
+          <button 
+            type="submit"
+            id="btn-pocket-submit"
+            class="bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs py-2 px-4 rounded-xl transition flex items-center gap-1.5 shrink-0"
+          >
+            <span>Ask</span>
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Hardcoded parsed Clean Under-18 Safe Itinerary Data
+    const ITINERARY_DATA = [
+      {
+        day: 1,
+        dateLabel: "20 Jun (Sat)",
+        dayTitle: "Hakata Walking Food Route",
+        score: "✅ Relaxed",
+        activities: [
+          { id: "d1-a1", time: "08:00 - 10:00", activity: "Arrival & Immigration", location: "Fukuoka Airport", costYen: 260, costSgd: 2.11, notes: "Get Hayakaken / SUGOCA IC card at the terminal.", mapUrl: "https://maps.google.com/?q=Fukuoka+Airport", priority: "Must", decision: "Rain: Proceed directly to airport shuttle. Hungry: Grab convenience store snack.", transport: "Subway Kuko Line to Hakata Station" },
+          { id: "d1-a2", time: "10:30 - 11:00", activity: "Hotel Check-in & Bag Drop", location: "The Basics Fukuoka", costYen: 0, costSgd: 0.00, notes: "Drop heavy luggage, grab reservation vouchers.", mapUrl: "https://maps.google.com/?q=The+Basics+Fukuoka", priority: "Must", decision: "Rain: Take a short taxi from Hakata East exit. Tired: Check if early check-in is possible.", transport: "Walk 7-10 min from Hakata Station" },
+          { id: "d1-a3", time: "11:15 - 12:30", activity: "Hakata Issou Ramen", location: "Hakata Station (East)", costYen: 1500, costSgd: 12.15, notes: "The 'Cappuccino' of Ramen. Infamous rich, frothy Tonkotsu. Expect queues!", mapUrl: "https://maps.google.com/?q=Hakata+Issou", priority: "Must", decision: "Hungry: Proceed and wait in line. Tired: Skip line and go to Hakata Deitos basement instead. Rain: Indoor ramen is the perfect warm comfort.", transport: "5 min walk from The Basics" },
+          { id: "d1-a4", time: "13:00 - 14:30", activity: "Kushida Shrine Exploration", location: "Hakata / Gion", costYen: 0, costSgd: 0.00, notes: "Guardian shrine of Hakata, home to the massive Yamakasa festival floats.", mapUrl: "https://maps.google.com/?q=Kushida+Shrine", priority: "Must", decision: "Rain: Walk through Kawabata Shopping Arcade instead. Tired: Short sit-down near the giant otafuku mask.", transport: "Walk via Kawabata Covered Arcade" },
+          { id: "d1-a5", time: "15:00 - 17:00", activity: "Canal City Hakata & Fountain Show", location: "Canal City", costYen: 0, costSgd: 0.00, notes: "Massive futuristic shopping city with hourly musical fountain shows.", mapUrl: "https://maps.google.com/?q=Canal+City+Hakata", priority: "Optional", decision: "Tired: Find a specialty coffee/tea shop on B1 floor. Rain: Ideal rainy day escape as it's a massive indoor complex.", transport: "Walk across the bridge from Kushida Shrine" },
+          { id: "d1-a6", time: "18:00 - 21:00", activity: "Nakasu Yatai Food Stalls", location: "Nakasu Riverfront", costYen: 3000, costSgd: 24.30, notes: "Fukuoka's iconic open-air food stalls. Savor crispy Hakata gyoza, grilled vegetable skewers, and bubbly melon soda.", mapUrl: "https://maps.google.com/?q=Nakasu+Yatai", priority: "Must", decision: "Rain: Pivot to an indoor Izakaya in Nakasu or Hakata Station. Tired: Go early at 18:00 to beat the crowd and secure a seat instantly.", transport: "Walk 10 min along the Naka River" }
+        ]
+      },
+      {
+        day: 2,
+        dateLabel: "21 Jun (Sun)",
+        dayTitle: "Dazaifu Historic & Scenic Escapade",
+        score: "✅ Balanced",
+        activities: [
+          { id: "d2-a1", time: "09:00 - 09:45", activity: "Scenic Rail Journey to Dazaifu", location: "Nishitetsu Fukuoka (Tenjin) Station", costYen: 410, costSgd: 3.32, notes: "Take the Nishitetsu Line to Dazaifu. Look out for the beautiful 'Tabito' sightseeing train.", mapUrl: "https://maps.google.com/?q=Nishitetsu+Fukuoka+Station", priority: "Must", decision: "Rain: Proceed as planned. Trains run normally. Hungry: Buy a sweet bun at the station store.", transport: "Nishitetsu Tenjin-Omuta Line" },
+          { id: "d2-a2", time: "10:00 - 11:30", activity: "Dazaifu Tenmangu Shrine", location: "Dazaifu", costYen: 0, costSgd: 0.00, notes: "Dedicated to the god of learning. Cross the red Taiko drum bridges representing past, present, and future.", mapUrl: "https://maps.google.com/?q=Dazaifu+Tenmangu", priority: "Must", decision: "Rain: Head to the Treasury Museum or Kyushu National Museum (indoor connection).", transport: "Walk along the bustling Sando approach" },
+          { id: "d2-a3", time: "11:45 - 12:30", activity: "Umegae Mochi tasting & Starbucks", location: "Dazaifu Sando", costYen: 600, costSgd: 4.86, notes: "Crispy grilled rice cake filled with sweet red bean paste. Visit the famous Kengo Kuma-designed Starbucks.", mapUrl: "https://maps.google.com/?q=Starbucks+Dazaifu", priority: "Must", decision: "Tired: Grab an indoor table at Starbucks. Hungry: Buy multiple piping hot mochi to eat while exploring.", transport: "A few steps from the main shrine gates" },
+          { id: "d2-a4", time: "13:00 - 15:00", activity: "Kyushu National Museum", location: "Dazaifu Hills", costYen: 700, costSgd: 5.67, notes: "Stunning modern glass building nestled in the hills. Connects via an futuristic escalator/light tunnel.", mapUrl: "https://maps.google.com/?q=Kyushu+National+Museum", priority: "Optional", decision: "Rain: Ideal indoor shelter. Take extra time exploring the artifacts. Tired: Rest in the spacious lobby.", transport: "Via the covered escalator walkway from Tenmangu" },
+          { id: "d2-a5", time: "18:00 - 20:30", activity: "Motsunabe Dinner", location: "Tenjin / Hakata", costYen: 3500, costSgd: 28.35, notes: "Fukuoka's famous warm hotpot with tender ingredients, cabbage, and rich soy/miso broth.", mapUrl: "https://maps.google.com/?q=Motsunabe+Tenjin", priority: "Must", decision: "Hungry: Double the cabbage and add champon noodles to the soup at the end! Rain: Perfect hotpot weather.", transport: "Return to Tenjin via Nishitetsu" }
+        ]
+      },
+      {
+        day: 3,
+        dateLabel: "22 Jun (Mon)",
+        dayTitle: "Ohori Park & Modern Fukuoka",
+        score: "✅ Active",
+        activities: [
+          { id: "d3-a1", time: "09:30 - 11:30", activity: "Morning Stroll & Ohori Park", location: "Ohori Park", costYen: 0, costSgd: 0.00, notes: "Beautiful central lake park modeled after West Lake in China. Walk across the island bridges.", mapUrl: "https://maps.google.com/?q=Ohori+Park", priority: "Must", decision: "Rain: Skip outdoor walk and head straight to Fukuoka Art Museum (inside the park). Tired: Rent a swan boat or rest at the lakeside deck.", transport: "Subway Kuko Line to Ohori Park Station" },
+          { id: "d3-a2", time: "11:45 - 13:00", activity: "Lakeside Sweet Café", location: "Royal Garden Cafe / Starbucks Ohori", costYen: 1200, costSgd: 9.72, notes: "Enjoy specialty iced chocolates and pastries with floor-to-ceiling glass windows overlooking the water.", mapUrl: "https://maps.google.com/?q=Starbucks+Ohori+Park", priority: "Must", decision: "Tired: Stay longer and read. Hungry: Order the fluffy pancakes or seasonal fruit tarts.", transport: "Walk along the lake pathway" },
+          { id: "d3-a3", time: "13:30 - 16:00", activity: "Fukuoka Castle Ruins & Maizuru Park", location: "Maizuru Park", costYen: 0, costSgd: 0.00, notes: "Walk up to the castle observation platform for a panoramic 360 view of the cityscape.", mapUrl: "https://maps.google.com/?q=Fukuoka+Castle+Ruins", priority: "Optional", decision: "Rain: Highly recommended to swap out for Tenjin Underground Mall shopping instead. Tired: Skip the steep hill climb.", transport: "Walk 10 mins from Ohori Park" },
+          { id: "d3-a4", time: "18:00 - 20:30", activity: "Yakitori & Craft Soda Feast", location: "Daimyo / Tenjin", costYen: 2800, costSgd: 22.68, notes: "Indulge in delicious specialty skewers served on crisp cabbage alongside sweet, cold, fizzing Ramune sodas.", mapUrl: "https://maps.google.com/?q=Yakitori+Daimyo", priority: "Must", decision: "Hungry: Keep ordering! Try the tasty potato salad and toasted rice balls. Rain: The lively Daimyo alleys are packed with cozy covered diners.", transport: "Subway to Akasaka or walk from Maizuru" }
+        ]
+      },
+      {
+        day: 4,
+        dateLabel: "23 Jun (Tue)",
+        dayTitle: "Seaside Exploration & Sky Views",
+        score: "✅ Highly Visual",
+        activities: [
+          { id: "d4-a1", time: "10:00 - 12:30", activity: "Uminonakamichi Seaside Park", location: "Uminonakamichi", costYen: 450, costSgd: 3.65, notes: "Rent a bicycle to explore miles of flower fields and seaside trails. Visit the cute petting zoo.", mapUrl: "https://maps.google.com/?q=Uminonakamichi+Seaside+Park", priority: "Must", decision: "Rain: Swap with Marine World Aquarium (fully indoor, right next door). Tired: Rent an electric cart/tram rather than biking.", transport: "JR Kagoshima Line to Kashii, transfer to Saitozaki Line" },
+          { id: "d4-a2", time: "13:00 - 15:30", activity: "Marine World Aquarium", location: "Uminonakamichi", costYen: 2500, costSgd: 20.25, notes: "Megastructure housing massive shark tanks, playful sea otters, and an ocean dolphin show with Fukuoka skyline backdrop.", mapUrl: "https://maps.google.com/?q=Marine+World+Uminonakamichi", priority: "Must", decision: "Rain: Perfect protection. Extend your stay inside the underwater tunnel. Hungry: Diner restaurant inside looks directly into the dolphin tank!", transport: "5 min walk from Seaside Park" },
+          { id: "d4-a3", time: "17:00 - 19:00", activity: "Fukuoka Tower Sunset & Momochi Beach", location: "Momochihama", costYen: 800, costSgd: 6.48, notes: "Japan's tallest seaside tower. See the futuristic golden triangular mirror glass structure.", mapUrl: "https://maps.google.com/?q=Fukuoka+Tower", priority: "Must", decision: "Rain: Views can be foggy, but still dry inside. Check live visibility. Tired: Take a taxi directly to the tower base from Nishijin station.", transport: "Bus from Tenjin or subway to Nishijin + bus" },
+          { id: "d4-a4", time: "19:30 - 21:30", activity: "Fresh Sushi Dinner", location: "Nishijin / Meinohama", costYen: 3200, costSgd: 25.92, notes: "Savor premium local seafood. Try the cooked sweet-soy glazed eel (Anago) and delicious tuna rolls.", mapUrl: "https://maps.google.com/?q=Sushi+Nishijin", priority: "Must", decision: "Hungry: Order 'Omakase' chef's choice set. Rain: Walk through the covered Nishijin market arcade.", transport: "Walk or brief subway/bus leg" }
+        ]
+      },
+      {
+        day: 5,
+        dateLabel: "24 Jun (Wed)",
+        dayTitle: "Tenjin Shopping & Hidden Gems",
+        score: "✅ Flexible",
+        activities: [
+          { id: "d5-a1", time: "10:00 - 12:30", activity: "Tenjin Underground Mall (Chikagai)", location: "Tenjin", costYen: 0, costSgd: 0.00, notes: "Incredible 19th-century European stone design with 150+ boutiques. Fully climate-controlled.", mapUrl: "https://maps.google.com/?q=Tenjin+Underground+Mall", priority: "Must", decision: "Rain: Ultimate sanctuary. Spend the whole morning here! Tired: Stop at one of the several high-end tea/dessert cafes inside.", transport: "Direct subway access to Tenjin" },
+          { id: "d5-a2", time: "13:00 - 14:30", activity: "Specialty Lunch: Tempura Hirao", location: "Tenjin Daimyo", costYen: 1100, costSgd: 8.91, notes: "Crispy tempura served piece-by-piece fresh out of the fryer. Extremely popular with Japanese high-schoolers!", mapUrl: "https://maps.google.com/?q=Tempura+Hirao+Tenjin", priority: "Must", decision: "Hungry: Definitely queue. Queue moves fast. Tired: Skip if standing in line sounds too exhausting.", transport: "Walk 5 mins from Tenjin Subway station" },
+          { id: "d5-a3", time: "15:00 - 17:30", activity: "Daimyo Alleyways & Vintage Hunting", location: "Daimyo Neighborhood", costYen: 2000, costSgd: 16.20, notes: "Hipster district filled with trendy streetwear, collectible toy stores, and independent sneaker shops.", mapUrl: "https://maps.google.com/?q=Daimyo+Fukuoka", priority: "Optional", decision: "Rain: Pop into Alice on Wednesday or covered character toy blocks. Tired: Rest up at a cozy milk tea parlor.", transport: "Walk across the street from Tenjin main block" },
+          { id: "d5-a4", time: "18:30 - 21:00", activity: "Premium Wagyu Sukiyaki Dinner", location: "Nakasu / Haruyoshi", costYen: 5000, costSgd: 40.50, notes: "Indulge in thinly-sliced luxury Japanese beef cooked table-side in sweet soy glaze and dipped in fresh egg or tasty sauces.", mapUrl: "https://maps.google.com/?q=Sukiyaki+Fukuoka", priority: "Must", decision: "Hungry: Go all out with extra marbled wagyu slices! Tired: Relax in a private tatami room.", transport: "Short subway leg or taxi" }
+        ]
+      },
+      {
+        day: 6,
+        dateLabel: "25 Jun (Thu)",
+        dayTitle: "Last Call Shopping & Departure",
+        score: "✅ Relaxed",
+        activities: [
+          { id: "d6-a1", time: "10:00 - 12:30", activity: "Souvenir Shopping & Depachika", location: "Hakata Hankyu / Ming", costYen: 1500, costSgd: 12.15, notes: "Buy Hakata Torimon (butter sweet cakes) and cute anime character items in the basement souvenir halls.", mapUrl: "https://maps.google.com/?q=Hakata+Hankyu", priority: "Must", decision: "Rain: Completely safe inside Hakata Station complex. Hungry: Sample free sweets in Ming souvenir hall.", transport: "Inside Hakata Station" },
+          { id: "d6-a2", time: "13:30 - 14:30", activity: "Cafe Break & Energy Reset", location: "Tenjin Specialty Cafe", costYen: 800, costSgd: 6.48, notes: "Final dessert, fluffy souffle pancakes, and hot chocolate to sit back, check photos, and relax.", mapUrl: "https://maps.google.com/?q=Tenjin", priority: "Must", decision: "Tired: Do not skip this! Sit down and recharge before the flight. Rain: Enjoy the peaceful rainy atmosphere.", transport: "Subway back to Tenjin / Hakata" },
+          { id: "d6-a3", time: "14:30 - 16:00", activity: "Shopping Phase 2 (Last Minute)", location: "Tenjin Central", costYen: 2000, costSgd: 16.20, notes: "Pick up cool gadgets or stationery from Bic Camera, Loft, or the giant Don Quijote store.", mapUrl: "https://maps.google.com/?q=Tenjin", priority: "Optional", decision: "Tired: Head to the hotel early to rest in the lobby instead. Rain: Underground pathways connect all department stores.", transport: "Walk through covered tunnels" },
+          { id: "d6-a4", time: "16:00 - 17:00", activity: "Luggage Pack & Rest Buffer", location: "Hotel Lobby / Café", costYen: 0, costSgd: 0.00, notes: "Retrieve bags from hotel hold. Safely wrap fragile toys and keychains inside travel cases.", mapUrl: "https://maps.google.com/?q=Hakata", priority: "Must", decision: "Tired: Critical buffer time. Grab a cold Ramune soda and rest your feet.", transport: "Walk back to hotel" },
+          { id: "d6-a5", time: "19:00 - 21:00", activity: "Final Food Stall & Departure Transit", location: "Nakasu / Airport Transit", costYen: 3000, costSgd: 24.30, notes: "Final casual bite like Hakata-style yakitori chicken or non-alcoholic apple cider. Head to airport via subway.", mapUrl: "https://maps.google.com/?q=Fukuoka+Airport", priority: "Must", decision: "Rain: Head early to the airport and dine in the modern departures food court. Tired: Taxi directly to international terminal.", transport: "2 stops on Kuko subway to Fukuoka Airport" }
+        ]
+      }
+    ];
+
+    const PHRASEBOOK = [
+      { japanese: "こんにちは", romaji: "Konnichiwa", english: "Hello!", category: "Greetings" },
+      { japanese: "ありがとうございます", romaji: "Arigatou gozaimasu", english: "Thank you very much!", category: "Greetings" },
+      { japanese: "すみません", romaji: "Sumimasen", english: "Excuse me / Sorry", category: "Greetings" },
+      { japanese: "これをください", romaji: "Kore wo kudasai", english: "This one, please.", category: "Shopping" },
+      { japanese: "いくらですか？", romaji: "Ikura desu ka?", english: "How much is this?", category: "Shopping" },
+      { japanese: "おいしいです！", romaji: "Oishii desu!", english: "It's delicious!", category: "Dining" },
+      { japanese: "お会計をお願いします", romaji: "Okaikei wo onegai shimasu", english: "The bill, please.", category: "Dining" }
+    ];
+
+    const THEMES = {
+      sakura: {
+        bg: "bg-pink-50/50",
+        primary: "from-rose-500 to-pink-600",
+        btnActive: "bg-rose-600 text-white shadow-rose-100",
+        darkAccent: "text-slate-900"
+      },
+      nature: {
+        bg: "bg-emerald-50/50",
+        primary: "from-emerald-600 to-teal-600",
+        btnActive: "bg-emerald-600 text-white shadow-emerald-100",
+        darkAccent: "text-slate-900"
+      },
+      neon: {
+        bg: "bg-slate-950 text-slate-100",
+        primary: "from-amber-400 to-rose-500",
+        btnActive: "bg-amber-400 text-slate-950 shadow-amber-900/40",
+        darkAccent: "text-white"
+      }
+    };
+
+    // State Variables
+    let selectedDay = 1;
+    let contingencyMode = 'sunny'; // sunny, rain, tired, hungry
+    let currentTheme = 'sakura';
+    let currentPhraseCategory = 'All';
+    let skippedActivityIds = {};
+    let pocketGuideOpen = false;
+
+    // Preloaded Lists
+    let packingList = [
+      { id: 1, text: "Passport & Flight Vouchers", category: "Documents", checked: true },
+      { id: 2, text: "Download Japan Web Link / QR code", category: "Documents", checked: false },
+      { id: 3, text: "Load digital IC card or cash ready", category: "Finance", checked: false },
+      { id: 4, text: "Comfortable running shoes (15k+ steps daily)", category: "Clothing", checked: false },
+      { id: 5, text: "Compact travel umbrella (Rain backup)", category: "Gear", checked: true },
+      { id: 6, text: "Pocket Wi-Fi or eSIM active", category: "Tech", checked: true },
+      { id: 7, text: "Power bank for long days of navigating", category: "Tech", checked: false }
+    ];
+
+    let memories = [
+      { id: 1, text: "Can't wait to try the delicious frothy broth at Hakata Issou on Day 1! 🍜", date: "June 20" },
+      { id: 2, text: "I must remember to take a picture of the giant wooden guardian masks at Kushida Shrine. ⛩️", date: "June 20" }
+    ];
+
+    // THEME SWITCHER
+    function setTheme(themeKey) {
+      currentTheme = themeKey;
+      const theme = THEMES[themeKey];
+      const body = document.getElementById('app-body');
+      
+      // Update body backgrounds and standard font colors
+      body.className = `theme-transition ${theme.bg} text-slate-800 font-sans antialiased pb-12`;
+      if (themeKey === 'neon') {
+        body.classList.remove('text-slate-800');
+        body.classList.add('text-slate-100');
+      }
+
+      // Update button visual states
+      ['sakura', 'nature', 'neon'].forEach(key => {
+        const btn = document.getElementById(`btn-theme-${key}`);
+        if (key === themeKey) {
+          btn.className = `text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-lg transition ${theme.btnActive}`;
+        } else {
+          btn.className = `text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-lg transition ${themeKey === 'neon' ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'}`;
+        }
+      });
+
+      // Header adaptation
+      const header = document.getElementById('app-header');
+      const headerTitle = document.getElementById('header-title');
+      const headerSubtitle = document.getElementById('header-subtitle');
+      const themeControlsBg = document.getElementById('theme-controls-bg');
+      const brandWrapper = document.getElementById('brand-icon-wrapper');
+
+      if (themeKey === 'neon') {
+        header.className = "sticky top-0 z-40 backdrop-blur-md bg-slate-900/90 border-slate-800 border-b shadow-sm transition-all duration-300";
+        headerTitle.className = "text-xl sm:text-2xl font-black tracking-tight text-white transition-colors duration-300";
+        headerSubtitle.className = "text-xs font-semibold text-slate-400 transition-colors duration-300";
+        themeControlsBg.className = "flex items-center gap-1 p-1 rounded-xl bg-slate-800 border border-slate-700";
+      } else {
+        header.className = "sticky top-0 z-40 backdrop-blur-md bg-white/80 border-b border-slate-100 shadow-sm transition-all duration-300";
+        headerTitle.className = "text-xl sm:text-2xl font-black tracking-tight text-slate-900 transition-colors duration-300";
+        headerSubtitle.className = "text-xs font-semibold text-slate-500 transition-colors duration-300";
+        themeControlsBg.className = "flex items-center gap-1 p-1 rounded-xl bg-slate-100/80 border border-slate-200";
+      }
+
+      brandWrapper.className = `bg-gradient-to-tr ${theme.primary} p-2.5 rounded-2xl shadow-md text-white transition-all duration-500`;
+
+      // Interactive components colors update
+      document.getElementById('day-hero-banner').className = `bg-gradient-to-r ${theme.primary} rounded-3xl p-6 text-white shadow-lg relative overflow-hidden transition-all duration-500`;
+      
+      // Update other dynamic elements
+      renderAll();
+    }
+
+    // CONTINGENCY SYSTEM ADAPTABILITY
+    function setContingency(mode) {
+      contingencyMode = mode;
+      
+      // Reset button styles
+      ['sunny', 'rain', 'tired', 'hungry'].forEach(m => {
+        const btn = document.getElementById(`btn-cont-${m}`);
+        btn.className = "flex items-center gap-2 p-2.5 rounded-xl border text-xs font-bold transition bg-white border-slate-100 text-slate-600 hover:bg-slate-50";
+      });
+
+      // Style active button
+      const activeBtn = document.getElementById(`btn-cont-${mode}`);
+      if (mode === 'sunny') {
+        activeBtn.className = "flex items-center gap-2 p-2.5 rounded-xl border text-xs font-bold transition bg-amber-50 border-amber-200 text-amber-700 shadow-xs";
+      } else if (mode === 'rain') {
+        activeBtn.className = "flex items-center gap-2 p-2.5 rounded-xl border text-xs font-bold transition bg-blue-50 border-blue-200 text-blue-700 shadow-xs";
+      } else if (mode === 'tired') {
+        activeBtn.className = "flex items-center gap-2 p-2.5 rounded-xl border text-xs font-bold transition bg-purple-50 border-purple-200 text-purple-700 shadow-xs";
+      } else if (mode === 'hungry') {
+        activeBtn.className = "flex items-center gap-2 p-2.5 rounded-xl border text-xs font-bold transition bg-rose-50 border-rose-200 text-rose-700 shadow-xs";
+      }
+
+      // Show alert banner
+      const banner = document.getElementById('contingency-alert-banner');
+      const bannerText = document.getElementById('contingency-alert-text');
+      if (mode !== 'sunny') {
+        banner.classList.remove('hidden');
+        bannerText.innerText = `Itinerary stops matching "${mode.toUpperCase()}" triggers are outlined in vibrant Rose. Check recommended steps on timeline cards!`;
+      } else {
+        banner.classList.add('hidden');
+      }
+
+      renderTimeline();
+    }
+
+    // TOGGLE LUGGAGE PREP STATUS
+    function togglePackingItem(id) {
+      packingList = packingList.map(item => item.id === id ? { ...item, checked: !item.checked } : item);
+      renderPackingList();
+    }
+
+    // DYNAMIC BUDGET DEDUCTION TOGGLES
+    function toggleSkipActivity(id) {
+      skippedActivityIds[id] = !skippedActivityIds[id];
+      renderStats();
+      renderTimeline();
+      renderLedger();
+    }
+
+    // RECALCULATE DYNAMIC STATS
+    function renderStats() {
+      let totalYen = 0;
+      let totalSgd = 0;
+      let totalStops = 0;
+      let activeStops = 0;
+
+      ITINERARY_DATA.forEach(day => {
+        day.activities.forEach(act => {
+          totalStops++;
+          if (!skippedActivityIds[act.id]) {
+            totalYen += act.costYen;
+            totalSgd += act.costSgd;
+            activeStops++;
+          }
+        });
+      });
+
+      // Update counters
+      document.getElementById('stats-total-yen').innerText = `¥${totalYen.toLocaleString()}`;
+      document.getElementById('stats-total-sgd').innerText = `Approx. $${totalSgd.toFixed(2)} SGD`;
+      document.getElementById('stats-stops-fraction').innerHTML = `${activeStops} <span class="text-xs font-normal text-slate-400">/ ${totalStops}</span>`;
+
+      // Update progress bar
+      document.getElementById('stats-progression-label').innerText = `Day ${selectedDay} of 6`;
+      document.getElementById('stats-progress-bar-fill').style.width = `${(selectedDay / 6) * 100}%`;
+
+      // Update active day budget highlights
+      const activeDayData = ITINERARY_DATA.find(d => d.day === selectedDay);
+      if (activeDayData) {
+        let dayYen = 0;
+        let daySgd = 0;
+        activeDayData.activities.forEach(a => {
+          if (!skippedActivityIds[a.id]) {
+            dayYen += a.costYen;
+            daySgd += a.costSgd;
+          }
+        });
+        document.getElementById('hero-budget-yen').innerText = `¥${dayYen.toLocaleString()}`;
+        document.getElementById('hero-budget-sgd').innerText = `~$${daySgd.toFixed(2)} SGD`;
+      }
+
+      // Update Ledger badges
+      document.getElementById('ledger-badge-yen').innerText = `¥${totalYen.toLocaleString()} JPY`;
+      document.getElementById('ledger-badge-sgd').innerText = `$${totalSgd.toFixed(2)} SGD`;
+    }
+
+    // RENDER CHECKLISTS
+    function renderPackingList() {
+      const container = document.getElementById('packing-list-container');
+      container.innerHTML = '';
+      
+      let checkedCount = 0;
+      packingList.forEach(item => {
+        if (item.checked) checkedCount++;
+        
+        const div = document.createElement('div');
+        div.className = "flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition cursor-pointer text-xs";
+        div.onclick = () => togglePackingItem(item.id);
+
+        const checkClass = item.checked ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-300 bg-white';
+        const textClass = item.checked ? 'line-through text-slate-400' : 'text-slate-700 font-semibold';
+
+        div.innerHTML = `
+          <div class="h-4.5 w-4.5 rounded border flex items-center justify-center transition shrink-0 ${checkClass}">
+            ${item.checked ? '<i data-lucide="check" class="w-3 h-3 stroke-[3]"></i>' : ''}
+          </div>
+          <div class="flex-1 text-left">
+            <p class="${textClass}">${item.text}</p>
+            <span class="text-[9px] text-slate-400 block font-bold uppercase mt-0.5">${item.category}</span>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      document.getElementById('packing-progress-badge').innerText = `${checkedCount}/${packingList.length} done`;
+      lucide.createIcons();
+    }
+
+    // SURVIVAL SOUNDBOARD RENDER & INTERACTIVE TAP
+    function playAudioSim(romaji) {
+      // Simulate real translation speak with a visual ping effect on item
+      console.log(`Pronouncing locally: ${romaji}`);
+    }
+
+    function filterPhrases(category) {
+      currentPhraseCategory = category;
+      
+      // Update filters visual buttons
+      ['All', 'Greetings', 'Dining', 'Shopping'].forEach(cat => {
+        const btn = document.getElementById(`btn-phrase-${cat.toLowerCase()}`);
+        if (cat === category) {
+          btn.className = "text-[10px] font-bold px-2.5 py-1 rounded-lg transition shrink-0 bg-slate-900 text-white";
+        } else {
+          btn.className = "text-[10px] font-bold px-2.5 py-1 rounded-lg transition shrink-0 bg-slate-100 text-slate-500 hover:bg-slate-200";
+        }
+      });
+
+      renderPhrasebook();
+    }
+
+    function renderPhrasebook() {
+      const container = document.getElementById('phrasebook-list-container');
+      container.innerHTML = '';
+
+      const list = currentPhraseCategory === 'All' 
+        ? PHRASEBOOK 
+        : PHRASEBOOK.filter(p => p.category === currentPhraseCategory);
+
+      list.forEach(phrase => {
+        const div = document.createElement('div');
+        div.className = "p-2.5 rounded-xl border text-left cursor-pointer transition flex items-center justify-between bg-slate-50/50 border-slate-100 hover:bg-slate-50";
+        if (currentTheme === 'neon') {
+          div.className = "p-2.5 rounded-xl border text-left cursor-pointer transition flex items-center justify-between bg-slate-900 border-slate-800/60 hover:bg-slate-850";
+        }
+
+        div.onclick = () => {
+          // Play simulation styling temporary
+          div.classList.add('bg-rose-50', 'border-rose-200');
+          setTimeout(() => {
+            div.classList.remove('bg-rose-50', 'border-rose-200');
+          }, 600);
+          playAudioSim(phrase.romaji);
+        };
+
+        div.innerHTML = `
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-black leading-none">${phrase.japanese}</span>
+              <span class="text-[10px] text-rose-500 font-bold font-mono">[${phrase.romaji}]</span>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-0.5 font-medium">${phrase.english}</p>
+          </div>
+          <div class="p-1.5 rounded-lg bg-slate-100/80 text-slate-400">
+            <i data-lucide="volume-2" class="w-3 h-3"></i>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+      lucide.createIcons();
+    }
+
+    // DAY SELECTOR TABS GENERATION
+    function selectDay(dayNum) {
+      selectedDay = dayNum;
+      
+      // Re-render tabs highlights
+      renderDayTabs();
+
+      // Update active day hero card
+      const activeData = ITINERARY_DATA.find(d => d.day === dayNum);
+      document.getElementById('current-day-label').innerText = activeData.dayTitle;
+      document.getElementById('hero-day-title').innerText = activeData.dayTitle;
+      document.getElementById('hero-day-date').innerText = activeData.dateLabel;
+      document.getElementById('hero-day-score').innerText = activeData.score;
+
+      renderStats();
+      renderTimeline();
+    }
+
+    function renderDayTabs() {
+      const container = document.getElementById('day-tabs-container');
+      container.innerHTML = '';
+
+      const activeTheme = THEMES[currentTheme];
+
+      ITINERARY_DATA.forEach(day => {
+        const isActive = day.day === selectedDay;
+        const btn = document.createElement('button');
+        
+        let tabClass = "flex-none min-w-[85px] py-2.5 px-3 rounded-xl flex flex-col items-center transition bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-100";
+        if (currentTheme === 'neon') {
+          tabClass = "flex-none min-w-[85px] py-2.5 px-3 rounded-xl flex flex-col items-center transition bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800";
+        }
+
+        if (isActive) {
+          tabClass = `flex-none min-w-[85px] py-2.5 px-3 rounded-xl flex flex-col items-center transition bg-gradient-to-br ${activeTheme.primary} text-white shadow-md font-bold scale-102`;
+        }
+
+        btn.className = tabClass;
+        btn.onclick = () => selectDay(day.day);
+        btn.innerHTML = `
+          <span class="text-[10px] uppercase tracking-wider opacity-80 font-bold">Day ${day.day}</span>
+          <span class="text-xs font-extrabold mt-0.5">${day.dateLabel.split(' ')[0]} ${day.dateLabel.split(' ')[1]}</span>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    // MAIN TIMELINE ACTIVITIES RENDERING
+    function renderTimeline() {
+      const container = document.getElementById('timeline-list-container');
+      container.innerHTML = '';
+
+      const activeDayData = ITINERARY_DATA.find(d => d.day === selectedDay);
+      const activeTheme = THEMES[currentTheme];
+
+      activeDayData.activities.forEach(act => {
+        const isMust = act.priority === "Must";
+        const isSkipped = skippedActivityIds[act.id];
+        
+        // Find if this activity corresponds to selected contingency
+        const matchesContingency = 
+          (contingencyMode === 'rain' && act.decision.toLowerCase().includes('rain')) ||
+          (contingencyMode === 'tired' && act.decision.toLowerCase().includes('tired')) ||
+          (contingencyMode === 'hungry' && act.decision.toLowerCase().includes('hungry'));
+
+        const card = document.createElement('div');
+        
+        let borderHighlightClass = "border-slate-100 hover:border-slate-200";
+        if (isSkipped) {
+          card.className = "bg-white rounded-2xl border transition-all duration-300 relative overflow-hidden opacity-40 border-slate-200";
+        } else if (matchesContingency) {
+          borderHighlightClass = "border-rose-400 ring-2 ring-rose-100 shadow-md scale-101";
+          card.className = `bg-white rounded-2xl border ${borderHighlightClass} transition-all duration-300 relative overflow-hidden`;
+        } else {
+          card.className = "bg-white rounded-2xl border border-slate-100 hover:border-slate-200 hover:shadow-xs transition-all duration-300 relative overflow-hidden";
+        }
+
+        if (currentTheme === 'neon') {
+          card.classList.add('bg-slate-900', 'text-slate-100');
+        }
+
+        const skipBtnText = !isSkipped ? 'Attending' : 'Skipped';
+        const skipBtnClass = !isSkipped ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-slate-100 text-slate-400 border-slate-200';
+        const checkIcon = !isSkipped ? '<i data-lucide="check" class="w-2.5 h-2.5 stroke-[3]"></i>' : '';
+
+        const priorityBadgeClass = isMust ? 'bg-rose-50 text-rose-600 border border-rose-100' : 'bg-slate-50 text-slate-400 border border-slate-100';
+
+        let priceText = `<span class="text-[9px] bg-emerald-50 text-emerald-700 border border-emerald-100 font-extrabold px-2 py-0.5 rounded-md inline-block text-center">Free Entry</span>`;
+        if (act.costYen > 0) {
+          priceText = `<span class="text-[9px] bg-amber-50 text-amber-700 border border-amber-100 font-extrabold px-2 py-0.5 rounded-md inline-block text-center">¥${act.costYen} ($${act.costSgd} SGD)</span>`;
+        }
+
+        card.innerHTML = `
+          <div class="p-5 flex flex-col sm:flex-row gap-4">
+            
+            <!-- Checkbox attendance state -->
+            <div class="sm:w-36 shrink-0 flex sm:flex-col justify-between sm:justify-start gap-1">
+              <button onclick="toggleSkipActivity('${act.id}')" class="flex items-center gap-1.5 py-1 px-2 rounded-lg text-[10px] font-bold border transition ${skipBtnClass}">
+                <div class="w-3.5 h-3.5 rounded-sm border flex items-center justify-center shrink-0 bg-white">
+                  ${checkIcon}
+                </div>
+                <span>${skipBtnText}</span>
+              </button>
+
+              <span class="text-xs font-black text-slate-950 tracking-tight block font-mono bg-slate-50 py-1 px-2.5 rounded-lg border border-slate-100 text-center mt-2.5">
+                ${act.time}
+              </span>
+
+              <div class="flex sm:flex-col gap-1.5 mt-2">
+                <span class="text-[9px] uppercase font-black px-2 py-0.5 rounded-md inline-block text-center tracking-wider ${priorityBadgeClass}">
+                  ${act.priority} priority
+                </span>
+                ${priceText}
+              </div>
+            </div>
+
+            <!-- Card textual context info -->
+            <div class="flex-1 space-y-2 text-left">
+              <div class="flex flex-wrap items-start justify-between gap-2">
+                <div class="space-y-0.5">
+                  <h3 class="font-bold text-slate-900 text-base group-hover:text-rose-500 transition duration-200">
+                    ${act.activity}
+                  </h3>
+                  <div class="flex items-center gap-1 text-slate-400">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+                    <span class="text-xs font-semibold">${act.location}</span>
+                  </div>
+                </div>
+                
+                <a href="${act.mapUrl}" target="_blank" class="flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-900 font-bold bg-slate-50 hover:bg-slate-100 border border-slate-100 py-1 px-3 rounded-xl transition shrink-0">
+                  <span>Directions</span>
+                  <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                </a>
+              </div>
+
+              <p class="text-xs text-slate-600 font-semibold leading-relaxed bg-slate-50/50 p-2.5 rounded-xl border border-slate-50">
+                ${act.notes}
+              </p>
+
+              <div class="flex items-center gap-1.5 text-[10px] font-bold text-slate-500 bg-slate-50 px-2 py-1 rounded-lg w-fit">
+                <i data-lucide="train" class="w-3 h-3 text-slate-400"></i>
+                <span>Transit: ${act.transport}</span>
+              </div>
+
+              <!-- Actionable alternate contingency guidance -->
+              <div class="mt-2.5 p-3 rounded-xl text-xs flex gap-2.5 ${matchesContingency ? 'bg-rose-50 text-rose-800 border border-rose-200 shadow-inner' : 'bg-slate-50/30 text-slate-500 border border-slate-100'}">
+                <div class="mt-0.5 font-bold shrink-0 text-rose-500">💡 IF CHANGE:</div>
+                <p class="italic leading-relaxed font-medium">${act.decision}</p>
+              </div>
+            </div>
+
+          </div>
+        `;
+        container.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    // MEMORY SCRAPBOOK MODULE
+    function addMemory(e) {
+      e.preventDefault();
+      const input = document.getElementById('input-memory-text');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const activeDayData = ITINERARY_DATA.find(d => d.day === selectedDay);
+      memories.unshift({
+        id: Date.now(),
+        text: text,
+        date: activeDayData.dateLabel.split(' (')[0]
+      });
+
+      input.value = '';
+      renderMemories();
+    }
+
+    function renderMemories() {
+      const grid = document.getElementById('memories-grid');
+      grid.innerHTML = '';
+
+      memories.forEach(m => {
+        const div = document.createElement('div');
+        div.className = "bg-amber-50/40 border border-amber-200/50 p-3 rounded-xl text-xs relative group text-left";
+        div.innerHTML = `
+          <span class="text-[9px] bg-amber-100 text-amber-800 font-extrabold px-1.5 py-0.5 rounded-md absolute top-2 right-2">
+            ${m.date}
+          </span>
+          <p class="text-slate-700 font-semibold pr-10 leading-relaxed mt-1">${m.text}</p>
+        `;
+        grid.appendChild(div);
+      });
+
+      document.getElementById('memories-counter').innerText = `${memories.length} notes`;
+    }
+
+    // TRAVEL FINANCIAL SPREADSHEET LEDGER
+    function renderLedger() {
+      const tbody = document.getElementById('ledger-table-body');
+      tbody.innerHTML = '';
+
+      ITINERARY_DATA.forEach(day => {
+        day.activities.forEach(act => {
+          const isSkipped = skippedActivityIds[act.id];
+          const tr = document.createElement('tr');
+          tr.className = `transition ${isSkipped ? 'bg-slate-50/50 opacity-40 line-through text-slate-400' : 'hover:bg-slate-50'}`;
+          
+          tr.innerHTML = `
+            <td class="px-3 py-2 font-bold">Day ${day.day}</td>
+            <td class="px-3 py-2 font-semibold text-slate-700">${act.activity}</td>
+            <td class="px-3 py-2 text-slate-500">${act.location}</td>
+            <td class="px-3 py-2 text-right font-mono text-slate-900 font-medium">
+              ${isSkipped ? 'Skipped' : `¥${act.costYen.toLocaleString()}`}
+            </td>
+            <td class="px-3 py-2 text-right font-mono text-slate-500">
+              ${isSkipped ? 'Skipped' : `$${act.costSgd.toFixed(2)}`}
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      });
+    }
+
+    // EXPERT GUIDED ASSISTANT SYSTEM
+    function togglePocketGuide(open) {
+      const drawer = document.getElementById('pocket-guide-drawer');
+      if (open) {
+        drawer.classList.remove('hidden');
+      } else {
+        drawer.classList.add('hidden');
+      }
+    }
+
+    function askPocketGuide(e) {
+      e.preventDefault();
+      const input = document.getElementById('input-pocket-q');
+      const qText = input.value.trim();
+      if (!qText) return;
+
+      const qBox = document.getElementById('custom-questions-box');
+      const qList = document.getElementById('custom-questions-list');
+      
+      qBox.classList.remove('hidden');
+
+      // Append user Q
+      const qDiv = document.createElement('div');
+      qDiv.className = "space-y-1 bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs";
+      qDiv.innerHTML = `
+        <div class="font-bold text-slate-500">Q: ${qText}</div>
+        <div class="mt-1 pl-2 border-l-2 border-rose-400 leading-relaxed text-slate-700 font-medium italic animate-pulse" id="typing-response">
+          Thinking...
+        </div>
+      `;
+      qList.appendChild(qDiv);
+      input.value = '';
+
+      // Simulate tour planning engine answers
+      setTimeout(() => {
+        const responseEl = document.getElementById('typing-response');
+        let reply = "Fukuoka is amazing! Based on your schedule, local travel via Kuko Line represents the absolute smoothest path. Consider grabbing delicious specialty pastries around Ohori Park lakeside!";
+        
+        const lowerQ = qText.toLowerCase();
+        if (lowerQ.includes('ramen') || lowerQ.includes('food') || lowerQ.includes('eat')) {
+          reply = "Your Day 1 includes premium Hakata Issou Ramen! I suggest lining up around 11:00 to dodge the massive lunch rush. For clean snack stops elsewhere, try Hakata Station's Deitos underpasses for fluffy takoyaki and non-alcoholic premium ginger ciders!";
+        } else if (lowerQ.includes('weather') || lowerQ.includes('rain')) {
+          reply = "Your 6-day itinerary features wonderful rain contingencies! If the skies open, switch on the 'Raining! 🌧️' toggle to identify instantly sheltered excursions such as the majestic glass corridors of the Kyushu National Museum.";
+        } else if (lowerQ.includes('souvenir') || lowerQ.includes('shopping') || lowerQ.includes('character')) {
+          reply = "Day 5 represents your ultimate retail explorer run! Tenjin Chikagai connects 150+ boutiques seamlessly. For cute items, the official Ghibli and Jump stores on Canal City's basement level will blow you away!";
+        }
+
+        responseEl.innerText = reply;
+        responseEl.classList.remove('italic', 'animate-pulse');
+        responseEl.id = ''; // remove ID so we don't duplicate reference
+      }, 1200);
+    }
+
+    // INIT ALL SYSTEMS
+    function renderAll() {
+      renderStats();
+      renderDayTabs();
+      renderTimeline();
+      renderPhrasebook();
+      renderPackingList();
+      renderMemories();
+      renderLedger();
+    }
+
+    window.onload = function() {
+      renderAll();
+    };
+  </script>
+</body>
+</html>
